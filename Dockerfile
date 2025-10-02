@@ -6,34 +6,25 @@ ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
 ARG TARGETARCH
 
 ####################
-# Upgrade
+# Upgrade & install MATE Desktop
 ####################
-RUN apt-get update -q \
-    && apt-get upgrade -y \
-    && apt-get autoclean \
-    && apt-get autoremove \
-    && rm -rf /var/lib/apt/lists/*
-    
-####################
-# Add Ubuntu Mate
-####################
-RUN apt-get update -q \
-    && apt-get upgrade -y \
-    && apt-get install -y \
+RUN apt-get update -q &&\
+    apt-get upgrade -y &&\
+    apt-get install -y \
         ubuntu-mate-desktop \
-    && apt-get autoclean \
-    && apt-get autoremove \
-    && rm -rf /var/lib/apt/lists/*
+        supervisor \
+        wget \
+        gosu \
+        git \
+        sudo \
+        python3-pip &&\
+    apt-get autoclean &&\
+    apt-get autoremove &&\
+    rm -rf /var/lib/apt/lists/*
 
 ####################
-# Add Package
+# Install TurboVNC
 ####################
-RUN apt-get update \
-    && apt-get install -y \
-        supervisor wget gosu git sudo python3-pip \
-    && apt-get autoclean \
-    && apt-get autoremove \
-    && rm -rf /var/lib/apt/lists/*
 RUN wget -O turbovnc.deb https://jaist.dl.sourceforge.net/project/turbovnc/3.0/turbovnc_3.0_${TARGETARCH}.deb \
     && dpkg -i turbovnc.deb && rm -rf turbovnc.deb
 
