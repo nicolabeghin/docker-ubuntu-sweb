@@ -11,7 +11,8 @@ jobs:
         os:
           [
             { version: 20.04, code: focal, latest: false },
-            { version: 22.04, code: jammy, latest: true },
+            { version: 22.04, code: jammy, latest: false },
+            { version: 24.04, code: noble, latest: true },
           ]
     runs-on: ubuntu-latest
     steps:
@@ -19,7 +20,7 @@ jobs:
 
       - name: Set Current Date
         env:
-          TZ: 'Asia/Tokyo'
+          TZ: 'Europe/Rome'
         run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
 
       - name: Setup QEMU
