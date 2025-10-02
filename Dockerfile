@@ -51,8 +51,8 @@ RUN mv /usr/lib/novnc/vnc.html /usr/lib/novnc/index.html
 ####################
 # Disable Update and Crash Report
 ####################
-RUN sed -i 's/Prompt=.*/Prompt=never/' /etc/update-manager/release-upgrades
-RUN sed -i 's/enabled=1/enabled=0/g' /etc/default/apport
+RUN [ -f /etc/update-manager/release-upgrades ] && sed -i 's/Prompt=.*/Prompt=never/' /etc/update-manager/release-upgrades || true
+RUN [ -f /etc/default/apport ] && sed -i 's/enabled=1/enabled=0/g' /etc/default/apport || true
 
 ####################
 # Supervisor
