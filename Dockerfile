@@ -37,8 +37,8 @@ RUN id -u ${USER} &>/dev/null || useradd --home-dir /home/$USER --shell /bin/bas
 RUN id -u ${USER} &>/dev/null || echo $USER:$USER | /usr/sbin/chpasswd
 RUN mkdir -p /home/$USER/.vnc \
     && echo $PASSWD | /opt/TurboVNC/bin/vncpasswd -f > /home/$USER/.vnc/passwd \
-    && chmod 600 /home/$USER/.vnc/passwd \
-    && chown -R $USER:$USER /home/$USER
+    && chmod 600 /home/$USER/.vnc/passwd
+    # && chown -R $USER:$USER /home/$USER
 
 ####################
 # noVNC and Websockify
