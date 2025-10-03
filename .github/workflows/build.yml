@@ -10,8 +10,8 @@ jobs:
       matrix:
         os:
           [
-            { version: 20.04, code: focal, latest: false },
-            { version: 22.04, code: jammy, latest: false },
+            # { version: 20.04, code: focal, latest: false },
+            # { version: 22.04, code: jammy, latest: false },
             { version: 24.04, code: noble, latest: true },
           ]
     runs-on: ubuntu-latest
