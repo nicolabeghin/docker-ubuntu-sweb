@@ -33,8 +33,8 @@ RUN wget -O turbovnc.deb https://jaist.dl.sourceforge.net/project/turbovnc/3.0/t
 ####################
 # Add User
 ####################
-ENV USER ubuntu \
-    PASSWD ubuntu
+ENV USER ubuntu
+ENV PASSWD ubuntu
 RUN NOBLE_OR_LATER=$([ $(grep VERSION_ID /etc/os-release | cut -d'"' -f2 | cut -d'.' -f1) -ge 24 ] && echo "true" || echo "false") && \
     [ "$NOBLE_OR_LATER" = "false" ] && useradd --home-dir /home/$USER --shell /bin/bash --create-home --user-group --groups adm,sudo $USER || true &&\
     [ "$NOBLE_OR_LATER" = "false" ] && echo $USER:$USER | /usr/sbin/chpasswd || true &&\
