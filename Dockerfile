@@ -34,8 +34,8 @@ RUN wget -O turbovnc.deb https://jaist.dl.sourceforge.net/project/turbovnc/3.0/t
 ####################
 ENV USER ubuntu
 ENV PASSWD ubuntu
-RUN id -u ${USER} &>/dev/null || useradd --home-dir /home/$USER --shell /bin/bash --create-home --user-group --groups adm,sudo $USER &&\
-    echo $USER:$USER | /usr/sbin/chpasswd || true &&\
+RUN [ $(grep VERSION_ID /etc/os-release | cut -d'"' -f2 | cut -d'.' -f1) -lt 22 ] && useradd --home-dir /home/$USER --shell /bin/bash --create-home --user-group --groups adm,sudo $USER || true &&\
+    [ $(grep VERSION_ID /etc/os-release | cut -d'"' -f2 | cut -d'.' -f1) -lt 22 ] && echo $USER:$USER | /usr/sbin/chpasswd || true &&\
     mkdir -p /home/$USER/.vnc &&\
     echo $PASSWD | /opt/TurboVNC/bin/vncpasswd -f > /home/$USER/.vnc/passwd &&\
     chmod 600 /home/$USER/.vnc/passwd &&\
