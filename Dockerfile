@@ -14,6 +14,7 @@ RUN apt-get update -q &&\
         ubuntu-mate-desktop \
         supervisor \
         wget \
+        curl \
         gosu \
         git \
         sudo \
