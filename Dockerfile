@@ -35,8 +35,9 @@ RUN wget -O turbovnc.deb https://jaist.dl.sourceforge.net/project/turbovnc/3.0/t
 ####################
 ENV USER ubuntu
 ENV PASSWD ubuntu
-RUN [ $(grep VERSION_ID /etc/os-release | cut -d'"' -f2 | cut -d'.' -f1) -lt 24 ] && useradd --home-dir /home/$USER --shell /bin/bash --create-home --user-group --groups adm,sudo $USER || true &&\
-    [ $(grep VERSION_ID /etc/os-release | cut -d'"' -f2 | cut -d'.' -f1) -lt 24 ] && echo $USER:$USER | /usr/sbin/chpasswd || true &&\
+RUN NOBLE_OR_LATER=$([ $(grep VERSION_ID /etc/os-release | cut -d'"' -f2 | cut -d'.' -f1) -ge 24 ] && echo "true" || echo "false") && \
+    [ "$NOBLE_OR_LATER" = "false" ] && useradd --home-dir /home/$USER --shell /bin/bash --create-home --user-group --groups adm,sudo $USER || true &&\
+    [ "$NOBLE_OR_LATER" = "false" ] && echo $USER:$USER | /usr/sbin/chpasswd || true &&\
     mkdir -p /home/$USER/.vnc &&\
     echo $PASSWD | /opt/TurboVNC/bin/vncpasswd -f > /home/$USER/.vnc/passwd &&\
     chmod 600 /home/$USER/.vnc/passwd &&\
@@ -45,9 +46,10 @@ RUN [ $(grep VERSION_ID /etc/os-release | cut -d'"' -f2 | cut -d'.' -f1) -lt 24 
 ####################
 # noVNC and Websockify
 ####################
-RUN git clone https://github.com/AtsushiSaito/noVNC.git -b add_clipboard_support /usr/lib/novnc &&\
-    [ $(grep VERSION_ID /etc/os-release | cut -d'"' -f2 | cut -d'.' -f1) -ge 24 ] && pip install --break-system-packages git+https://github.com/novnc/websockify.git@v0.10.0 || true &&\
-    [ $(grep VERSION_ID /etc/os-release | cut -d'"' -f2 | cut -d'.' -f1) -lt 24 ] && pip install git+https://github.com/novnc/websockify.git@v0.10.0 || true &&\
+RUN NOBLE_OR_LATER=$([ $(grep VERSION_ID /etc/os-release | cut -d'"' -f2 | cut -d'.' -f1) -ge 24 ] && echo "true" || echo "false") && \
+    git clone https://github.com/AtsushiSaito/noVNC.git -b add_clipboard_support /usr/lib/novnc &&\
+    [ "$NOBLE_OR_LATER" = "true" ] && pip install --break-system-packages git+https://github.com/novnc/websockify.git@v0.10.0 || true &&\
+    [ "$NOBLE_OR_LATER" = "false" ] && pip install git+https://github.com/novnc/websockify.git@v0.10.0 || true &&\
     sed -i "s/password = WebUtil.getConfigVar('password');/password = '$PASSWD'/" /usr/lib/novnc/app/ui.js  &&\
     mv /usr/lib/novnc/vnc.html /usr/lib/novnc/index.html
 
