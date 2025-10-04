@@ -48,8 +48,7 @@ RUN NOBLE_OR_LATER=$([ $(grep VERSION_ID /etc/os-release | cut -d'"' -f2 | cut -
 ####################
 RUN NOBLE_OR_LATER=$([ $(grep VERSION_ID /etc/os-release | cut -d'"' -f2 | cut -d'.' -f1) -ge 24 ] && echo "true" || echo "false") && \
     git clone https://github.com/AtsushiSaito/noVNC.git -b add_clipboard_support /usr/lib/novnc &&\
-    [ "$NOBLE_OR_LATER" = "true" ] && pip install --break-system-packages git+https://github.com/novnc/websockify.git@v0.10.0 || true &&\
-    [ "$NOBLE_OR_LATER" = "false" ] && pip install git+https://github.com/novnc/websockify.git@v0.10.0 || true &&\
+    pip install $([ "$NOBLE_OR_LATER" = "true" ] && echo "--break-system-packages") git+https://github.com/novnc/websockify.git@v0.10.0 || true &&\
     sed -i "s/password = WebUtil.getConfigVar('password');/password = '$PASSWD'/" /usr/lib/novnc/app/ui.js  &&\
     mv /usr/lib/novnc/vnc.html /usr/lib/novnc/index.html
 
