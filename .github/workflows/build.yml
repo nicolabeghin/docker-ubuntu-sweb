@@ -44,7 +44,6 @@ jobs:
           push: true
           tags: |
             quay.io/nicolabeghin/docker-ubuntu-sweb:${{ matrix.os.code }}
-            quay.io/nicolabeghin/docker-ubuntu-sweb:${{ matrix.os.code }}-${{ env.CURRENT_DATE }}
             quay.io/nicolabeghin/docker-ubuntu-sweb:${{ matrix.os.version }}
 
       - name: Build and Push Latest
@@ -57,6 +56,5 @@ jobs:
           push: true
           tags: |
             quay.io/nicolabeghin/docker-ubuntu-sweb:${{ matrix.os.code }}
-            quay.io/nicolabeghin/docker-ubuntu-sweb:${{ matrix.os.code }}-${{ env.CURRENT_DATE }}
             quay.io/nicolabeghin/docker-ubuntu-sweb:${{ matrix.os.version }}
             quay.io/nicolabeghin/docker-ubuntu-sweb:latest
